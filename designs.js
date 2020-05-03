@@ -1,37 +1,30 @@
-// Select color input
-// Select size input
-var height, color, width;
-
-$('#sizePicker').submit(function(event) {
+document.getElementById('sizePicker').addEventListener('submit', function(event) {
     event.preventDefault();
-    height = $('#inputHeight').val(); //get the value of height from the user
-    width = $('#inputWidth').val(); //get the value of width from the user
-    // When size is submitted by the user, call makeGrid()
-    makeGrid(height, width);
-
+    makeGrid(); //call the makeGrid function
 });
 
 
-function makeGrid(height, width) {
+function makeGrid() {
 
-    $('tr').remove();
-    // Your code goes here!
-    for (var i = 1; i <= height; i++) {
-        $('#pixelCanvas').append('<tr id=table' + i + '></tr>');
-        for (var j = 1; j <= width; j++) {
-            $('#table' + i).append('<td></td>');
+    const height = document.getElementById('inputHeight').value; //storing the height of the grid
+    const width = document.getElementById('inputWidth').value; //storing the width of the grid
+    const canvas = document.getElementById('pixelCanvas'); //selecting the element with specified id and store it in variable canvas.
+
+    canvas.innerHTML = '';
+
+
+    for (let r = 0; r < height; r++) { //add the rows
+        let row = canvas.insertRow(r);
+
+
+        for (let c = 0; c < width; c++) {
+            let cell = row.insertCell(c); //add the cells
+
+
+            cell.addEventListener('click', function(event) {
+
+                event.target.style.backgroundColor = document.getElementById('colorPicker').value;
+            }); //fill the selected color in the selected cell on clicking
         }
     }
-
-    //Apply colors on clicking each cell
-    $('td').click(function fillColor() {
-        color = $('#colorPicker').val();
-        //Check if 'this' attribute has already a styling in it
-        if ($(this).attr('style')) {
-            $(this).removeAttr('style') //if yes, then remove it
-        } else {
-            $(this).attr('style', 'background-color:' + color); //else, add the style to ir
-        }
-
-    });
 }
